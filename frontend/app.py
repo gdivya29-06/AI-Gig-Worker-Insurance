@@ -184,18 +184,18 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
     st.markdown("##### LOGIN AS")
-    role = st.radio("", ["👷 Worker", "🏢 Admin"], label_visibility="collapsed")
+    role = st.radio("Login as", ["👷 Worker", "🏢 Admin"], label_visibility="collapsed")
 
     st.markdown("---")
     st.markdown("##### NAVIGATE")
 
     if role == "👷 Worker":
-        page = st.selectbox("", ["Login / Register", "Dashboard", "Buy Policy", "My Coverage", "Claims"],
-                            label_visibility="collapsed")
+        page = st.selectbox("Navigate", ["Login / Register", "Dashboard", "Buy Policy", "My Coverage", "Claims"],
+                    label_visibility="collapsed")
     else:
-        page = st.selectbox("", ["Analytics", "Risk Monitor", "Fraud Alerts"],
-                            label_visibility="collapsed")
-
+         page = st.selectbox("Navigate", ["Analytics", "Risk Monitor", "Fraud Alerts"],
+                    label_visibility="collapsed")
+                    
     st.markdown("---")
 
     if st.session_state.worker_name:
