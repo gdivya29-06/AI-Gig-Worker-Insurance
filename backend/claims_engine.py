@@ -61,7 +61,7 @@ def initiate_claim(worker_id: int, trigger_type: str, db: Session) -> dict:
 
     # 3 — Verify disruption is real using trigger engine
     disruption_data = detect_all_disruptions(worker.city, worker.platform)
-    active_types    = [d["trigger_type"] for d in disruption_data.get("disruptions", [])]
+    active_types    = [d["type"] for d in disruption_data.get("disruptions", [])]
 
     # Find the specific disruption details
     income_loss_pct = 60  # default
@@ -69,7 +69,7 @@ def initiate_claim(worker_id: int, trigger_type: str, db: Session) -> dict:
     trigger_value   = f"Auto-detected: {trigger_type}"
 
     for d in disruption_data.get("disruptions", []):
-        if d["trigger_type"] == trigger_type:
+        if d["type"] == trigger_type:
             income_loss_pct = d["income_loss_pct"]
             severity        = d["severity"]
             trigger_value   = d["value"]
@@ -207,13 +207,13 @@ def auto_trigger_claims(db: Session) -> dict:
                 if disruption["severity"] in ["high", "medium"]:
                     result = initiate_claim(
                         worker_id    = policy.worker_id,
-                        trigger_type = disruption["trigger_type"],
+                        trigger_type = disruption["type"],
                         db           = db
                     )
                     triggered.append({
                         "worker_id": policy.worker_id,
                         "city":      policy.city,
-                        "trigger":   disruption["trigger_type"],
+                        "trigger":   disruption["type"],
                         "result":    result,
                     })
 

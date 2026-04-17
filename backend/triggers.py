@@ -38,7 +38,7 @@ MOCK_CONDITIONS = {
     "bangalore": {"temp": 36.0, "rainfall": 5.0,  "aqi": 2, "desc": "Partly cloudy"},
     "mumbai":    {"temp": 33.0, "rainfall": 48.0, "aqi": 3, "desc": "Heavy rain"},
     "delhi":     {"temp": 44.5, "rainfall": 0.0,  "aqi": 5, "desc": "Severe haze"},
-    "chennai":   {"temp": 41.0, "rainfall": 28.0, "aqi": 3, "desc": "Thunderstorm"},
+    "chennai":   {"temp": 41.0, "rainfall": 60.0, "aqi": 3, "desc": "Thunderstorm"},
     "hyderabad": {"temp": 42.0, "rainfall": 3.0,  "aqi": 2, "desc": "Hot and humid"},
     "pune":      {"temp": 38.0, "rainfall": 12.0, "aqi": 2, "desc": "Warm"},
     "kolkata":   {"temp": 37.0, "rainfall": 35.0, "aqi": 4, "desc": "Heavy showers"},
@@ -92,7 +92,7 @@ def check_rain_trigger(weather: dict) -> dict:
     rain = weather["rainfall"]
     if rain >= 50:
         return {
-            "trigger_type":     "flood_risk",
+            "type":     "flood_risk",
             "is_active":        True,
             "severity":         "high",
             "value":            f"{rain} mm/hr",
@@ -102,7 +102,7 @@ def check_rain_trigger(weather: dict) -> dict:
         }
     elif rain >= 20:
         return {
-            "trigger_type":     "heavy_rain",
+            "type":     "heavy_rain",
             "is_active":        True,
             "severity":         "medium",
             "value":            f"{rain} mm/hr",
@@ -110,7 +110,7 @@ def check_rain_trigger(weather: dict) -> dict:
             "message":          "Heavy rain — delivery capacity severely reduced",
             "icon":             "🌧️"
         }
-    return {"trigger_type": "rain", "is_active": False, "severity": "none",
+    return {"type": "rain", "is_active": False, "severity": "none",
             "value": f"{rain} mm/hr", "income_loss_pct": 0, "message": "", "icon": "🌦️"}
 
 # ══════════════════════════════════════════════════════════════
@@ -120,7 +120,7 @@ def check_heat_trigger(weather: dict) -> dict:
     temp = weather["temp"]
     if temp >= 45:
         return {
-            "trigger_type":     "extreme_heat",
+            "type":     "extreme_heat",
             "is_active":        True,
             "severity":         "high",
             "value":            f"{temp}°C",
@@ -130,7 +130,7 @@ def check_heat_trigger(weather: dict) -> dict:
         }
     elif temp >= 42:
         return {
-            "trigger_type":     "extreme_heat",
+            "type":     "extreme_heat",
             "is_active":        True,
             "severity":         "medium",
             "value":            f"{temp}°C",
@@ -138,7 +138,7 @@ def check_heat_trigger(weather: dict) -> dict:
             "message":          "Extreme heat — reduced working hours advised",
             "icon":             "☀️"
         }
-    return {"trigger_type": "heat", "is_active": False, "severity": "none",
+    return {"type": "heat", "is_active": False, "severity": "none",
             "value": f"{temp}°C", "income_loss_pct": 0, "message": "", "icon": "🌤️"}
 
 # ══════════════════════════════════════════════════════════════
@@ -148,7 +148,7 @@ def check_aqi_trigger(weather: dict) -> dict:
     aqi = weather["aqi"]  # 1=Good, 2=Fair, 3=Moderate, 4=Poor, 5=Very Poor
     if aqi == 5:
         return {
-            "trigger_type":     "severe_pollution",
+            "type":     "severe_pollution",
             "is_active":        True,
             "severity":         "high",
             "value":            f"AQI Index {aqi}/5 (Severe)",
@@ -158,7 +158,7 @@ def check_aqi_trigger(weather: dict) -> dict:
         }
     elif aqi == 4:
         return {
-            "trigger_type":     "poor_aqi",
+            "type":     "poor_aqi",
             "is_active":        True,
             "severity":         "medium",
             "value":            f"AQI Index {aqi}/5 (Poor)",
@@ -166,7 +166,7 @@ def check_aqi_trigger(weather: dict) -> dict:
             "message":          "Poor air quality — limited outdoor working advised",
             "icon":             "🌫️"
         }
-    return {"trigger_type": "aqi", "is_active": False, "severity": "none",
+    return {"type": "aqi", "is_active": False, "severity": "none",
             "value": f"AQI Index {aqi}/5", "income_loss_pct": 0, "message": "", "icon": "✅"}
 
 # ══════════════════════════════════════════════════════════════
@@ -210,7 +210,7 @@ def check_curfew_trigger(city: str) -> dict:
 
     if curfew_active:
         return {
-            "trigger_type":     "curfew",
+            "type":     "curfew",
             "is_active":        True,
             "severity":         "high",
             "value":            f"Curfew active {hour}:00",
@@ -220,7 +220,7 @@ def check_curfew_trigger(city: str) -> dict:
         }
 
     return {
-        "trigger_type":    "curfew",
+        "type":    "curfew",
         "is_active":       False,
         "severity":        "none",
         "value":           "No curfew",
@@ -250,7 +250,7 @@ def check_platform_outage_trigger(platform: str) -> dict:
     # In production this checks real platform uptime
     if status == "down":
         return {
-            "trigger_type":     "platform_outage",
+            "type":     "platform_outage",
             "is_active":        True,
             "severity":         "high",
             "value":            f"{platform.title()} app DOWN",
@@ -260,7 +260,7 @@ def check_platform_outage_trigger(platform: str) -> dict:
         }
     elif status == "degraded":
         return {
-            "trigger_type":     "platform_outage",
+            "type":     "platform_outage",
             "is_active":        True,
             "severity":         "medium",
             "value":            f"{platform.title()} app DEGRADED",
@@ -270,7 +270,7 @@ def check_platform_outage_trigger(platform: str) -> dict:
         }
 
     return {
-        "trigger_type":    "platform_outage",
+        "type":    "platform_outage",
         "is_active":       False,
         "severity":        "none",
         "value":           f"{platform.title()} operational",

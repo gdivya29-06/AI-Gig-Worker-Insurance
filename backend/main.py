@@ -9,7 +9,7 @@ from auth import router as auth_router
 from dashboard import router as dashboard_router
 from ml_premium_model import ml_calculate_premium
 from claims_engine import initiate_claim, auto_trigger_claims
-from triggers import detect_all_disruptions, detect_disruptions
+from triggers import detect_all_disruptions
 
 # ── App setup ─────────────────────────────────────────────────
 app = FastAPI(
