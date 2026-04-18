@@ -258,8 +258,10 @@ AI-Gig-Worker-Insurance/
 
 ## 🔗 Links
 
-- **Demo Video (Phase 1):** [To be added before March 20 EOD]
-- **Live App (Phase 2+):** Coming soon
+- **Demo Video - https://drive.google.com/file/d/1-LFiY71_m7lgrWc81d_5hr9RsnakMTVM/view?usp=sharing
+- **Presentation - https://drive.google.com/file/d/1RAWlHxBC0X-1KVwLtAfM02wYTMsgJtue/view?usp=sharing
+- **Live App:** Coming soon
+- 
 
 ---
 
